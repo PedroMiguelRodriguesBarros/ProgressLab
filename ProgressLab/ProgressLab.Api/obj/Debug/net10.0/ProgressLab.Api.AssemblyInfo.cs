@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProgressLab.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+813d4aa6372e107ac0485bd76325819b0d9f8242")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6bed78d1a26d926b017e1422dd3c494041ba9c7e")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProgressLab.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProgressLab.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
