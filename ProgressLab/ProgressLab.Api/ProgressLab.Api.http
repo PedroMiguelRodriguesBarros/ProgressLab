@@ -1,0 +1,6 @@
+@ProgressLab.Api_HostAddress = http://localhost:5012
+
+GET {{ProgressLab.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

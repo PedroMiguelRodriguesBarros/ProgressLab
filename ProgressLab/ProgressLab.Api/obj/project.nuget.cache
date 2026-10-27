@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "dgSpecHash": "gcRO3a2XIbA=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Pedro\\Desktop\\ProgressLab\\ProgressLab\\ProgressLab.Api\\ProgressLab.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Pedro\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.3\\microsoft.aspnetcore.openapi.10.0.3.nupkg.sha512",
+    "C:\\Users\\Pedro\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
+      "projectPath": "C:\\Users\\Pedro\\Desktop\\ProgressLab\\ProgressLab\\ProgressLab.Api\\ProgressLab.Api.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Pedro\\Desktop\\ProgressLab\\ProgressLab\\ProgressLab.Api\\ProgressLab.Api.csproj",
+      "libraryId": "Microsoft.OpenApi",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
+}
