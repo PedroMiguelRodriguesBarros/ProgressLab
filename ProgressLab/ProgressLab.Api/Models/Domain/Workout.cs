@@ -3,11 +3,11 @@ using MuscleGroups;
 
 namespace Workouts {
     public class Workout {
-        private Guid Id { get; set; }
-        private string Name { get; set; }
-        private DateTimeOffset CreatedAt { get; set; }
-        private List<Exercise> Exercises { get; set; }
-        private List<MuscleGroup> MuscleGroups { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public List<Exercise> Exercises { get; set; }
+        public List<MuscleGroup> MuscleGroups { get; set; }
 
         public Workout() {
         }

@@ -1,8 +1,8 @@
 namespace MuscleGroups {
     public class MuscleGroup {
-        private Guid Id { get; set; }
-        private string Name { get; set; }
-        private string Description { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
         public MuscleGroup() {
         }
