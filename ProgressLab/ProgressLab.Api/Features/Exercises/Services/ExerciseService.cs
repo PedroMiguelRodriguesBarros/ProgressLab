@@ -54,5 +54,26 @@ namespace Exercises
             }
             await _repo.DeleteAsync(exercise, ct);
         }
+
+        public async Task<Exercise?> UpdateExerciseAsync(Guid exerciseId, UpdateExerciseDto dto, CancellationToken ct = default)
+        {
+            var exercise = await _repo.GetByIdAsync(exerciseId, ct);
+            if (exercise == null)
+            {
+                return null;
+            }
+
+            var muscleGroup = await _muscleGroupRepo.GetByIdAsync(dto.MuscleGroupId, ct);
+            if (muscleGroup == null)
+            {
+                return null;
+            }
+
+            exercise.Name = dto.Name;
+            exercise.Description = dto.Description;
+            exercise.MuscleGroup = muscleGroup;
+
+            return await _repo.UpdateAsync(exercise, ct);
+        }
     }
 }

@@ -54,11 +54,11 @@ namespace Exercises
         [HttpPut("{id}")]
         public async Task<ActionResult<ExerciseDetailedDto>> Update([FromRoute] Guid exerciseId, [FromBody] UpdateExerciseDto dto, CancellationToken ct)
         {
-            var exercise = await _service.UpdateExerciseAsync(exerciseId, dto, ct);
-            if (exercise == null)
+            var updatedExercise = await _service.UpdateExerciseAsync(exerciseId, dto, ct);
+            if (updatedExercise == null)
                 return NotFound();
 
-            return Ok(_mapper.Map(exercise));
+            return Ok(_mapper.Map(updatedExercise));
         }
     }
 }

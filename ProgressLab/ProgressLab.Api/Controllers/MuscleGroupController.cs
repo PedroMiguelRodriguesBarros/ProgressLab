@@ -54,11 +54,11 @@ namespace MuscleGroups
         [HttpPut("{id}")]
         public async Task<ActionResult<MuscleGroupDetailedDto>> Update([FromRoute] Guid muscleGroupId, [FromBody] UpdateMuscleGroupDto dto, CancellationToken ct)
         {
-            var muscleGroup = await _service.UpdateMuscleGroupAsync(muscleGroupId, dto, ct);
-            if (muscleGroup == null)
+            var updatedMuscleGroup = await _service.UpdateMuscleGroupAsync(muscleGroupId, dto, ct);
+            if (updatedMuscleGroup == null)
                 return NotFound();
 
-            return Ok(_mapper.Map(muscleGroup));
+            return Ok(_mapper.Map(updatedMuscleGroup));
         }
     }
 }
