@@ -50,5 +50,15 @@ namespace Exercises
             await _service.DeleteAsync(exerciseId, ct);
             return Ok("Exercise deleted successfully.");
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ExerciseDetailedDto>> Update([FromRoute] Guid exerciseId, [FromBody] UpdateExerciseDto dto, CancellationToken ct)
+        {
+            var exercise = await _service.UpdateExerciseAsync(exerciseId, dto, ct);
+            if (exercise == null)
+                return NotFound();
+
+            return Ok(_mapper.Map(exercise));
+        }
     }
 }

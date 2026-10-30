@@ -3,7 +3,7 @@ using MuscleGroups;
 
 namespace Workouts {
     public class Workout {
-        public Guid Id { get; set; }
+        public Guid WorkoutId { get; set; }
         public string Name { get; set; }
         public DateTimeOffset Date { get; set; }
         public List<Exercise> Exercises { get; set; }
@@ -13,7 +13,7 @@ namespace Workouts {
         }
 
         public Workout(string name, List<Exercise> exercises, List<MuscleGroup> muscleGroups) {
-            Id = Guid.NewGuid();
+            WorkoutId = Guid.NewGuid();
             Name = name;
             Date = DateTimeOffset.UtcNow;
             Exercises = exercises;
