@@ -8,7 +8,7 @@ namespace Sets
         public int Repetitions { get; set; }
 
         [Required(ErrorMessage = "Weight is required.")]
-        public float Weight { get; set; }
+        public decimal Weight { get; set; }
 
     }
 }

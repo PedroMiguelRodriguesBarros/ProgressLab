@@ -19,9 +19,9 @@ namespace MuscleGroups
             return await _repo.GetAllAsync(page, pageSize, ct);
         }
 
-        public async Task<MuscleGroup?> CreateAsync(string name, string description, CancellationToken ct = default)
+        public async Task<MuscleGroup?> CreateAsync(CreateMuscleGroupDto dto, CancellationToken ct = default)
         {
-            var muscleGroup = new MuscleGroup(name, description);
+            var muscleGroup = new MuscleGroup(dto.Name, dto.Description);
             return await _repo.AddAsync(muscleGroup, ct);
         }
 

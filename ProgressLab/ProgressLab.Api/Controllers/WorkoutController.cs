@@ -17,9 +17,9 @@ namespace Workouts
         }
 
         [HttpPost]
-        public async Task<ActionResult<WorkoutDetailedDto>> Create([FromRoute] string name, [FromRoute] string? notes, [FromRoute] List<Guid> exerciseId, [FromBody] CreateWorkoutDto dto, CancellationToken ct)
+        public async Task<ActionResult<WorkoutDetailedDto>> Create([FromBody] CreateWorkoutDto dto, CancellationToken ct)
         {
-            var workout = await _service.CreateAsync(name, notes, exerciseId, ct);
+            var workout = await _service.CreateAsync(dto, ct);
             if (workout == null)
                 return BadRequest();
 

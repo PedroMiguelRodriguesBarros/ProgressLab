@@ -22,14 +22,9 @@ namespace Workouts
             return await _repo.GetAllAsync(page, pageSize, ct);
         }
 
-        public async Task<Workout?> CreateAsync(string name, string? notes, List<Guid> exerciseIds, CancellationToken ct = default)
+        public async Task<Workout?> CreateAsync(CreateWorkoutDto dto, CancellationToken ct = default)
         {
-            var exercises = exerciseIds.Select(id => new WorkoutExercise { Exercise = new Exercise { ExerciseId = id } }).ToList();
-            var muscleGroups = new List<MuscleGroup>();
-
-            muscleGroups.AddRange(exercises.Select(e => e.Exercise.MuscleGroup).Distinct().ToList());
-
-            var workout = new Workout(name, notes, exercises, muscleGroups);
+            var workout = new Workout(dto.Name, dto.Notes);
             return await _repo.AddAsync(workout, ct);
         }
 
@@ -42,13 +37,10 @@ namespace Workouts
             }
 
             var updatedExercises = dto.Exercises.Select(id => new WorkoutExercise { Exercise = new Exercise { ExerciseId = id } }).ToList();
-            var updatedMuscleGroups = updatedExercises.Select(e => e.Exercise.MuscleGroup).Distinct().ToList();
 
             workout.Name = dto.Name;
             workout.Date = dto.Date;
             workout.Notes = dto.Notes;
-            workout.Exercises = updatedExercises;
-            workout.MuscleGroups = updatedMuscleGroups;
 
             return await _repo.UpdateAsync(workout, ct);
         }

@@ -11,18 +11,17 @@ namespace Workouts
         public Guid ExerciseId { get; set; }
         public Exercise Exercise { get; set; } = null!;
         public int Order { get; set; }
-        public List<Set> Sets { get; set; }
+        public List<Set> Sets { get; set; } = new();
 
 
         public WorkoutExercise() { }
 
-        public WorkoutExercise(Guid workoutId, Guid exerciseId, int order, List<Set> sets)
+        public WorkoutExercise(Guid workoutId, Guid exerciseId, int order)
         {
             WorkoutExerciseId = Guid.NewGuid();
             WorkoutId = workoutId;
             ExerciseId = exerciseId;
             Order = order;
-            Sets = sets;
         }
     }
 }

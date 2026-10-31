@@ -6,8 +6,9 @@ namespace Exercises {
         public Guid ExerciseId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public Guid MuscleGroupId { get; set; }
         public MuscleGroup MuscleGroup { get; set; }
-        public List<WorkoutExercise> WorkoutExercises { get; set; }
+        public List<WorkoutExercise> WorkoutExercises { get; set; } = new();
 
         public Exercise() {
         }

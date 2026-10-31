@@ -17,9 +17,9 @@ namespace Sets
         }
 
         [HttpPost]
-        public async Task<ActionResult<SetDetailedDto>> Create([FromRoute] int setNumber, [FromRoute] int reps, [FromRoute] float weight, [FromRoute] Guid workoutExerciseId, [FromBody] CreateSetDto dto, CancellationToken ct)
+        public async Task<ActionResult<SetDetailedDto>> Create([FromBody] CreateSetDto dto, CancellationToken ct)
         {
-            var set = await _service.CreateAsync(reps, setNumber, weight, workoutExerciseId, ct);
+            var set = await _service.CreateAsync(dto, ct);
             if (set == null)
                 return NotFound();
 
@@ -52,6 +52,13 @@ namespace Sets
                 return NotFound();
 
             return Ok(_mapper.Map(updatedSet));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete([FromRoute] Guid setId, CancellationToken ct)
+        {
+            await _service.DeleteAsync(setId, ct);
+            return Ok("Set deleted successfully.");
         }
     }
 }

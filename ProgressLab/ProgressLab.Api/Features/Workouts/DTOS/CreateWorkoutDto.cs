@@ -11,8 +11,5 @@ namespace Workouts
         public DateTimeOffset Date { get; set; }
 
         public string? Notes { get; set; }
-
-        [Required(ErrorMessage = "At least one exercise is required.")]
-        public List<Guid> ExerciseIds { get; set; } 
     }
 }

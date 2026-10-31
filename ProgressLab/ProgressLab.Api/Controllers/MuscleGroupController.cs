@@ -17,9 +17,9 @@ namespace MuscleGroups
         }
 
         [HttpPost]
-        public async Task<ActionResult<MuscleGroupDetailedDto>> Create([FromRoute] string name, [FromRoute] string description, [FromBody] CreateMuscleGroupDto dto, CancellationToken ct)
+        public async Task<ActionResult<MuscleGroupDetailedDto>> Create([FromBody] CreateMuscleGroupDto dto, CancellationToken ct)
         {
-            var muscleGroup = await _service.CreateAsync(name, description, ct);
+            var muscleGroup = await _service.CreateAsync(dto, ct);
             if (muscleGroup == null)
                 return BadRequest("Failed to create muscle group.");
 

@@ -39,6 +39,15 @@ namespace Sets
             }
         }
 
+        public async Task<List<Set>> GetAllByWorkoutExerciseIdAsync(Guid workoutExerciseId, CancellationToken ct = default)
+        {
+            return await QueryWithRelations()
+                .AsNoTracking()
+                .Where(it => it.WorkoutExerciseId == workoutExerciseId)
+                .OrderByDescending(it => it.SetNumber)
+                .ToListAsync(ct);
+        }
+
         public async Task<List<Set>> GetAllAsync(int page, int pageSize, CancellationToken ct = default)
         {
             return await QueryWithRelations()

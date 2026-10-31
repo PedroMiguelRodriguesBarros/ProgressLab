@@ -23,16 +23,20 @@ namespace Sets
             return await _repo.GetAllAsync(page, pageSize, ct);
         }
 
-        public async Task<Set?> CreateAsync(int reps, int sets, float weight, Guid exerciseId, CancellationToken ct = default)
+        public async Task<Set?> CreateAsync(CreateSetDto dto, CancellationToken ct = default)
         {
-            var exercise = await _exerciseRepo.GetByIdAsync(exerciseId, ct);
-            if (exercise == null)
+            var sets = await _repo.GetAllByWorkoutExerciseIdAsync(dto.WorkoutExerciseId, ct);
+            if (sets != null && sets.Count > 0)
             {
-                return null;
+                var setNumber = sets.Max(s => s.SetNumber) + 1;
+                var set = new Set(setNumber, dto.Repetitions, dto.Weight, dto.WorkoutExerciseId);
+                return await _repo.AddAsync(set, ct);
             }
-
-            var set = new Set(sets, reps, weight, exercise);
-            return await _repo.AddAsync(set, ct);
+            else
+            {
+                var set = new Set(1, dto.Repetitions, dto.Weight, dto.WorkoutExerciseId);
+                return await _repo.AddAsync(set, ct);
+            }
         }
 
         public async Task<Set?> UpdateSetAsync(Guid setId, UpdateSetDto dto, CancellationToken ct = default)
@@ -47,6 +51,18 @@ namespace Sets
             set.Weight = dto.Weight;
             
             return await _repo.UpdateAsync(set, ct);
+        }
+
+        public async Task<bool> DeleteAsync(Guid setId, CancellationToken ct = default)
+        {
+            var set = await _repo.GetByIdAsync(setId, ct);
+            if (set == null)
+            {
+                return false;
+            }
+
+            await _repo.DeleteAsync(set, ct);
+            return true;
         }
     }
 }

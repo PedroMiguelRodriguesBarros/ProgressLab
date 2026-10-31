@@ -19,7 +19,7 @@ namespace Exercises
         [HttpPost]
         public async Task<ActionResult<ExerciseDetailedDto>> Create([FromBody] CreateExerciseDto dto, CancellationToken ct)
         {
-            var exercise = await _service.CreateAsync(dto.Name, dto.Description, dto.MuscleGroupId, ct);
+            var exercise = await _service.CreateAsync(dto, ct);
             if (exercise == null)
                 return BadRequest("Failed to create exercise.");
 

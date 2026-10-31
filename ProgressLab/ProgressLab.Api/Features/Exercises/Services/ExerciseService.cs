@@ -23,14 +23,14 @@ namespace Exercises
             return await _repo.GetAllAsync(page, pageSize, ct);
         }
 
-        public async Task<Exercise?> CreateAsync(string name, string description, Guid muscleGroupId, CancellationToken ct = default)
+        public async Task<Exercise?> CreateAsync(CreateExerciseDto dto, CancellationToken ct = default)
         {
-            var muscleGroup = await _muscleGroupRepo.GetByIdAsync(muscleGroupId, ct);
+            var muscleGroup = await _muscleGroupRepo.GetByIdAsync(dto.MuscleGroupId, ct);
             if (muscleGroup == null)
             {
                 return null;
             }
-            var exercise = new Exercise(name, description, muscleGroup);
+            var exercise = new Exercise(dto.Name, dto.Description, muscleGroup);
             return await _repo.AddAsync(exercise, ct);
         }
 
