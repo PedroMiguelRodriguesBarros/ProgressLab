@@ -8,8 +8,9 @@ namespace Workouts
             {
                 Name = src.Name,
                 Date = src.Date,
-                ExerciseNames = src.Exercises.Select(e => e.Name).ToList(),
-                MuscleGroupNames = src.MuscleGroups.Select(mg => mg.Name).ToList()
+                Notes = src.Notes,
+                Exercises = src.Exercises.Select(we => we.Exercise.Name).ToList(),
+                MuscleGroups = src.MuscleGroups.Select(mg => mg.Name).ToList()
             };
         }
     }

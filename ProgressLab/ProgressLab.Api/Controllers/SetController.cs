@@ -17,9 +17,9 @@ namespace Sets
         }
 
         [HttpPost]
-        public async Task<ActionResult<SetDetailedDto>> Create([FromRoute] int setNumber, [FromRoute] int reps, [FromRoute] float weight, [FromRoute] Guid exerciseId, [FromBody] CreateSetDto dto, CancellationToken ct)
+        public async Task<ActionResult<SetDetailedDto>> Create([FromRoute] int setNumber, [FromRoute] int reps, [FromRoute] float weight, [FromRoute] Guid workoutExerciseId, [FromBody] CreateSetDto dto, CancellationToken ct)
         {
-            var set = await _service.CreateAsync(reps, setNumber, weight, exerciseId, ct);
+            var set = await _service.CreateAsync(reps, setNumber, weight, workoutExerciseId, ct);
             if (set == null)
                 return NotFound();
 

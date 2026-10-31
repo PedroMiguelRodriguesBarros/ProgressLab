@@ -1,3 +1,6 @@
+using MuscleGroups;
+using Exercises;
+
 namespace Workouts
 {
     public class WorkoutDetailedDtoToEntityMapper : IMapper<WorkoutDetailedDto, Workout>
@@ -7,9 +10,9 @@ namespace Workouts
             return new Workout
             {
                 Name = src.Name,
-                Date = src.Date,
-                ExerciseNames = src.ExerciseNames,
-                MuscleGroupNames = src.MuscleGroupNames
+                Notes = src.Notes,
+                Exercises = src.Exercises.Select(name => new WorkoutExercise { Exercise = new Exercise { Name = name } }).ToList(),
+                MuscleGroups = src.MuscleGroups.Select(name => new MuscleGroup { Name = name }).ToList()
             };
         }
     }

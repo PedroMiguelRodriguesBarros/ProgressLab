@@ -1,4 +1,4 @@
-using Exercises;
+using Workouts;
 
 namespace Sets {
     public class Set {
@@ -6,12 +6,12 @@ namespace Sets {
         public int SetNumber { get; set; }
         public int Repetitions { get; set; }
         public float Weight { get; set; }
-        public Exercise Exercise { get; set; }
+        public WorkoutExercise Exercise { get; set; }
 
         public Set() {
         }
 
-        public Set(int setNumber, int repetitions, float weight, Exercise exercise) {
+        public Set(int setNumber, int repetitions, float weight, WorkoutExercise exercise) {
             SetId = Guid.NewGuid();
             SetNumber = setNumber;
             Repetitions = repetitions;

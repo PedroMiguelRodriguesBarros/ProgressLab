@@ -1,4 +1,5 @@
 using MuscleGroups;
+using Workouts;
 
 namespace Exercises {
     public class Exercise {
@@ -6,6 +7,7 @@ namespace Exercises {
         public string Name { get; set; }
         public string Description { get; set; }
         public MuscleGroup MuscleGroup { get; set; }
+        public List<WorkoutExercise> WorkoutExercises { get; set; }
 
         public Exercise() {
         }

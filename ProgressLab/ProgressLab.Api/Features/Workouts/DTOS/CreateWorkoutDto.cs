@@ -10,10 +10,9 @@ namespace Workouts
         [Required(ErrorMessage = "Workout date is required.")]
         public DateTimeOffset Date { get; set; }
 
-        [Required(ErrorMessage = "At least one exercise is required.")]
-        public List<string> ExerciseNames { get; set; }
+        public string? Notes { get; set; }
 
-        [Required(ErrorMessage = "At least one muscle group is required.")]
-        public List<string> MuscleGroupNames { get; set; }  
+        [Required(ErrorMessage = "At least one exercise is required.")]
+        public List<Guid> ExerciseIds { get; set; } 
     }
 }
