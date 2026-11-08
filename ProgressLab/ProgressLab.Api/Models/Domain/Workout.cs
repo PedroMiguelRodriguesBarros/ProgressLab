@@ -1,6 +1,3 @@
-using Exercises;
-using MuscleGroups;
-
 namespace Workouts {
     public class Workout {
         public Guid WorkoutId { get; set; }

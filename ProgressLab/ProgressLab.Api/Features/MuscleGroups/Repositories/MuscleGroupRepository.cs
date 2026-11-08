@@ -5,9 +5,9 @@ namespace MuscleGroups
 {
     public class MuscleGroupRepository : IMuscleGroupRepository
     {
-        private readonly MuscleGroupsDbContext _dbContext;
+        private readonly ProgressLabDbContext _dbContext;
 
-        public MuscleGroupRepository(MuscleGroupsDbContext dbContext)
+        public MuscleGroupRepository(ProgressLabDbContext dbContext)
         {
             _dbContext = dbContext;
         }

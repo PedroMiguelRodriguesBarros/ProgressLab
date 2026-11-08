@@ -5,9 +5,9 @@ namespace Exercises
 {
     public class ExerciseRepository : IExerciseRepository
     {
-        private readonly ExercisesDbContext _dbContext;
+        private readonly ProgressLabDbContext _dbContext;
 
-        public ExerciseRepository(ExercisesDbContext dbContext)
+        public ExerciseRepository(ProgressLabDbContext dbContext)
         {
             _dbContext = dbContext;
         }

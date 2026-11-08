@@ -25,12 +25,7 @@ namespace Exercises
 
         public async Task<Exercise?> CreateAsync(CreateExerciseDto dto, CancellationToken ct = default)
         {
-            var muscleGroup = await _muscleGroupRepo.GetByIdAsync(dto.MuscleGroupId, ct);
-            if (muscleGroup == null)
-            {
-                return null;
-            }
-            var exercise = new Exercise(dto.Name, dto.Description, muscleGroup);
+            var exercise = new Exercise(dto.Name, dto.Description);
             return await _repo.AddAsync(exercise, ct);
         }
 
@@ -63,15 +58,8 @@ namespace Exercises
                 return null;
             }
 
-            var muscleGroup = await _muscleGroupRepo.GetByIdAsync(dto.MuscleGroupId, ct);
-            if (muscleGroup == null)
-            {
-                return null;
-            }
-
             exercise.Name = dto.Name;
             exercise.Description = dto.Description;
-            exercise.MuscleGroup = muscleGroup;
 
             return await _repo.UpdateAsync(exercise, ct);
         }

@@ -5,9 +5,9 @@ namespace Sets
 {
     public class SetRepository : ISetRepository
     {
-        private readonly SetsDbContext _dbContext;
+        private readonly ProgressLabDbContext _dbContext;
 
-        public SetRepository(SetsDbContext dbContext)
+        public SetRepository(ProgressLabDbContext dbContext)
         {
             _dbContext = dbContext;
         }
