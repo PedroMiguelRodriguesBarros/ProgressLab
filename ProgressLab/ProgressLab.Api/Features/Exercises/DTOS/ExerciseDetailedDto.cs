@@ -1,17 +1,13 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Exercises
 {
     public class ExerciseDetailedDto
     {
-        [Required(ErrorMessage = "Name is required.")]
-        public required string Name { get; set; }
+        public Guid ExerciseId { get; set; }
 
-        [Required(ErrorMessage = "Description is required.")]
-        public required string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Muscle group is required.")]
-        public required string MuscleGroup { get; set; }
+        public string Description { get; set; } = string.Empty;
 
+        public List<ExerciseMuscleGroupDto> MuscleGroups { get; set; } = new();
     }
 }

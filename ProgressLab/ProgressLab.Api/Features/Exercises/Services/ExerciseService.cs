@@ -1,4 +1,5 @@
 using MuscleGroups;
+using ExercisesMuscleGroups;
 
 namespace Exercises
 {
@@ -25,7 +26,33 @@ namespace Exercises
 
         public async Task<Exercise?> CreateAsync(CreateExerciseDto dto, CancellationToken ct = default)
         {
+            var muscleGroups = new List<ExerciseMuscleGroup>();
+            foreach (var muscleGroupDto in dto.MuscleGroups)
+            {
+                var muscleGroup = await _muscleGroupRepo.GetByIdAsync(muscleGroupDto.MuscleGroupId, ct);
+                if (muscleGroup == null)
+                {
+                    return null;
+                }
+
+                var exerciseMuscleGroup = new ExerciseMuscleGroup
+                {
+                    MuscleGroupId = muscleGroup.MuscleGroupId,
+                    Role = muscleGroupDto.Role
+                };
+
+                if (muscleGroupDto.Role == MuscleGroupRole.Primary)
+                {
+                    if (muscleGroups.Any(mg => mg.Role == MuscleGroupRole.Primary)) //Se já existir um grupo muscular primário, não permitir adicionar outro
+                    {
+                        return null; // Only one primary muscle group allowed
+                    }
+                }
+                muscleGroups.Add(exerciseMuscleGroup);
+            }
+            
             var exercise = new Exercise(dto.Name, dto.Description);
+            exercise.AddMuscleGroups(muscleGroups);
             return await _repo.AddAsync(exercise, ct);
         }
 

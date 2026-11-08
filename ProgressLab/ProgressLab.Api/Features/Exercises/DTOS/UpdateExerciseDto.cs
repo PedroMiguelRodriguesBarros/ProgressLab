@@ -4,13 +4,16 @@ namespace Exercises
 {
     public class UpdateExerciseDto
     {
-        [Required(ErrorMessage = "Name is required.")]
+        [Required]
+        [StringLength(255)]
         public required string Name { get; set; }
 
-        [Required(ErrorMessage = "Description is required.")]
+        [Required]
+        [StringLength(2000)]
         public required string Description { get; set; }
 
-        [Required(ErrorMessage = "Muscle group is required.")]
-        public required Guid MuscleGroupId { get; set; }
+        [Required]
+        [MinLength(1)]
+        public List<ExerciseMuscleGroupInputDto> MuscleGroups { get; set; } = new();
     }
 }

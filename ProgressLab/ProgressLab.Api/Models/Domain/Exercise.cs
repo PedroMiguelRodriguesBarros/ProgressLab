@@ -17,5 +17,9 @@ namespace Exercises {
             Name = name;
             Description = description;
         }
+
+        public void AddMuscleGroups(List<ExerciseMuscleGroup> muscleGroups) {
+            ExerciseMuscleGroups.AddRange(muscleGroups);
+        }
     }
 }
