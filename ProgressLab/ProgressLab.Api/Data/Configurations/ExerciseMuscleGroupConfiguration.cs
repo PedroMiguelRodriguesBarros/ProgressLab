@@ -22,7 +22,7 @@ namespace Data.Configurations
             builder.HasOne(emg => emg.MuscleGroup)
                 .WithMany(mg => mg.ExerciseMuscleGroups)
                 .HasForeignKey(emg => emg.MuscleGroupId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

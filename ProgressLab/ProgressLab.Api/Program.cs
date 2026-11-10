@@ -1,5 +1,6 @@
 using Data.Context;
 using Microsoft.EntityFrameworkCore;
+using MuscleGroups;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,25 @@ var connectionString = builder.Configuration
 builder.Services.AddDbContext<ProgressLabDbContext>(options =>
     options.UseNpgsql(connectionString)
 );
+
+// Repositories
+// Registar aqui o MuscleGroupRepository quando estiver implementado.
+
+// Services
+builder.Services.AddScoped<MuscleGroupService>();
+
+// Mappers
+builder.Services.AddScoped<
+    IMapper<MuscleGroup, MuscleGroupDetailedDto>,
+    MuscleGroupEntityToDetailedDtoMapper>();
+
+builder.Services.AddScoped<
+    IMapper<MuscleGroup, MuscleGroupSummaryDto>,
+    MuscleGroupEntityToSummaryDtoMapper>();
+
+builder.Services.AddScoped<
+    IMapper<CreateMuscleGroupDto, MuscleGroup>,
+    CreateMuscleGroupDtoToEntityMapper>();
 
 var app = builder.Build();
 

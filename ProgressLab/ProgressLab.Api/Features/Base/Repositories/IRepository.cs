@@ -1,10 +1,11 @@
 namespace Base.Repositories
 {
-    public interface IRepository<T, TId>
+    public interface IRepository<TEntity, TId>
     {
-        Task<T> AddAsync(T entity, CancellationToken ct = default);
-        Task DeleteAsync(T entity, CancellationToken ct = default);
-        Task<T> GetByIdAsync(TId id, CancellationToken ct = default);
-        Task<List<T>> GetAllAsync(int page, int pageSize, CancellationToken ct = default);
+        Task<TEntity> AddAsync(TEntity entity, CancellationToken ct = default);
+        Task<TEntity?> GetByIdAsync(TId id, CancellationToken ct = default);
+        Task<IReadOnlyList<TEntity>> GetAllAsync(int page, int pageSize, CancellationToken ct = default);
+        Task UpdateAsync(TEntity entity, CancellationToken ct = default);
+        Task<bool> DeleteAsync(TEntity entity, CancellationToken ct = default);
     }
 }

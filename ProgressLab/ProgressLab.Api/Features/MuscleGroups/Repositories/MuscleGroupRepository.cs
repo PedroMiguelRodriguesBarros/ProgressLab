@@ -1,3 +1,4 @@
+using Base.Repositories;
 using Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,65 +13,57 @@ namespace MuscleGroups
             _dbContext = dbContext;
         }
 
-        private IQueryable<MuscleGroup> QueryWithRelations()
-        {
-            return _dbContext.MuscleGroups;
-        }
-
         public async Task<MuscleGroup> AddAsync(MuscleGroup muscleGroup, CancellationToken ct = default)
         {
             _dbContext.MuscleGroups.Add(muscleGroup);
             await _dbContext.SaveChangesAsync(ct);
 
-            var createdMuscleGroup = await QueryWithRelations()
-                .AsNoTracking()
-                .FirstOrDefaultAsync(it => it.MuscleGroupId == muscleGroup.MuscleGroupId, ct);
-
-            return createdMuscleGroup!;
+            return muscleGroup;
         }
 
-        public async Task DeleteAsync(MuscleGroup muscleGroup, CancellationToken ct = default)
+        public async Task<MuscleGroup?> GetByIdAsync(Guid id, CancellationToken ct = default)
         {
-            var existingMuscleGroup = await _dbContext.MuscleGroups.FirstOrDefaultAsync(it => it.MuscleGroupId == muscleGroup.MuscleGroupId, ct);
-            if (existingMuscleGroup != null)
-            {
-                _dbContext.MuscleGroups.Remove(existingMuscleGroup);
-                await _dbContext.SaveChangesAsync(ct);
-            }
+            return await _dbContext.MuscleGroups
+                .AsNoTracking()
+                .FirstOrDefaultAsync(it => it.MuscleGroupId == id, ct);
+
         }
 
-        public async Task<List<MuscleGroup>> GetAllAsync(int page, int pageSize, CancellationToken ct = default)
+        public async Task<IReadOnlyList<MuscleGroup>> GetAllAsync(int page, int pageSize, CancellationToken ct = default)
         {
-            return await QueryWithRelations()
+            if (page < 1)
+                throw new ArgumentOutOfRangeException(nameof(page));
+
+            if (pageSize < 1 || pageSize > 100)
+                throw new ArgumentOutOfRangeException(nameof(pageSize));
+
+            return await _dbContext.MuscleGroups
                 .AsNoTracking()
-                .OrderByDescending(it => it.Name)
+                .OrderBy(mg => mg.Name)
+                .ThenBy(mg => mg.MuscleGroupId)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(ct);
         }
 
-        public async Task<MuscleGroup> UpdateAsync(MuscleGroup muscleGroup, CancellationToken ct = default)
+        public async Task UpdateAsync(MuscleGroup muscleGroup, CancellationToken ct = default)
         {
-            _dbContext.MuscleGroups.Update(muscleGroup);
+            _dbContext.Entry(muscleGroup).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync(ct);
-
-            return muscleGroup;
         }
 
-        public async Task<MuscleGroup> GetByIdAsync(Guid id, CancellationToken ct = default)
+        public async Task<bool> DeleteAsync(MuscleGroup entity, CancellationToken ct = default)
         {
-            var muscleGroup = await QueryWithRelations()
-                .AsNoTracking()
-                .FirstOrDefaultAsync(it => it.MuscleGroupId == id, ct);
+            _dbContext.MuscleGroups.Remove(entity);
+            var affectedRows = await _dbContext.SaveChangesAsync(ct);
 
-            return muscleGroup!;
+            return affectedRows > 0;
         }
-
         public async Task<bool> ExistsAsync(Guid muscleGroupId, CancellationToken ct = default)
         {
             return await _dbContext.MuscleGroups
-                .AsNoTracking()
                 .AnyAsync(it => it.MuscleGroupId == muscleGroupId, ct);
         }
     }
 }
+
