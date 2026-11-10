@@ -4,11 +4,13 @@ namespace MuscleGroups
 {
     public class CreateMuscleGroupDto
     {
-        [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; }
+        [Required]
+        [StringLength(255)]
+        public required string Name { get; set; }
 
-        [Required(ErrorMessage = "Description is required.")]
-        public string Description { get; set; }
+        [Required]
+        [StringLength(2000)]
+        public required string Description { get; set; }
 
     }
 }

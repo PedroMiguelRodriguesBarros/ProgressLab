@@ -4,11 +4,13 @@ namespace MuscleGroups
 {
     public class UpdateMuscleGroupDto
     {
-        [Required(ErrorMessage = "Name is required.")]
-        public string Name { get; set; }
+        [Required]
+        [StringLength(255, MinimumLength = 1)]
+        public required string Name { get; set; }
 
-        [Required(ErrorMessage = "Description is required.")]
-        public string Description { get; set; }
+        [Required]
+        [StringLength(2000, MinimumLength = 1)]
+        public required string Description { get; set; }
 
     }
 }

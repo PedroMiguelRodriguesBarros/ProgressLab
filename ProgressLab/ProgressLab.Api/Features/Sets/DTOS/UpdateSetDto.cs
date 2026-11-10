@@ -4,10 +4,10 @@ namespace Sets
 {
     public class UpdateSetDto
     {
-        [Required(ErrorMessage = "Repetitions is required.")]
+        [Range(1, int.MaxValue)]
         public int Repetitions { get; set; }
 
-        [Required(ErrorMessage = "Weight is required.")]
+        [Range(typeof(decimal), "0", "9999.99")]
         public decimal Weight { get; set; }
 
     }

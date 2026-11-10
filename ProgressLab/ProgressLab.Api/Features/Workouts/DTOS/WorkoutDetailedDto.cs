@@ -4,19 +4,14 @@ namespace Workouts
 {
     public class WorkoutDetailedDto
     {
-        [Required(ErrorMessage = "Workout name is required.")]
-        public string Name { get; set; }
+        public Guid WorkoutId { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Workout date is required.")]
         public DateTimeOffset Date { get; set; }
 
         public string? Notes { get; set; }
+        public List<WorkoutExerciseDetailedDto> WorkoutExercises { get; set; } = new();
 
-        [Required(ErrorMessage = "At least one exercise is required.")]
-        public List<string> Exercises { get; set; }
-
-        [Required(ErrorMessage = "At least one muscle group is required.")]
-        public List<string> MuscleGroups { get; set; }
 
     }
 }

@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 namespace Sets
 {
     public class SetDetailedDto
-    {
-        [Required(ErrorMessage = "Set number is required.")]               
+    {               
+
+        public Guid SetId { get; set; }
+
         public int SetNumber { get; set; }
         
-        [Required(ErrorMessage = "Repetitions is required.")]
         public int Repetitions { get; set; }
 
-        [Required(ErrorMessage = "Weight is required.")]
         public decimal Weight { get; set; }
 
     }

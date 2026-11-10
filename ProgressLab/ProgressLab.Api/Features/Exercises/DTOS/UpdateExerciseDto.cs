@@ -4,16 +4,17 @@ namespace Exercises
 {
     public class UpdateExerciseDto
     {
+
         [Required]
-        [StringLength(255)]
+        [StringLength(255, MinimumLength = 1)]
         public required string Name { get; set; }
 
         [Required]
-        [StringLength(2000)]
+        [StringLength(2000, MinimumLength = 1)]
         public required string Description { get; set; }
 
         [Required]
         [MinLength(1)]
-        public List<ExerciseMuscleGroupInputDto> MuscleGroups { get; set; } = new();
+        public List<ExerciseMuscleGroupInputDto>? MuscleGroups { get; set; } = new();
     }
 }

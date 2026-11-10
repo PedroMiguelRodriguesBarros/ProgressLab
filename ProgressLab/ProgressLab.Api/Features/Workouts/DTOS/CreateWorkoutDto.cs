@@ -4,12 +4,14 @@ namespace Workouts
 {
     public class CreateWorkoutDto
     {
-        [Required(ErrorMessage = "Workout name is required.")]
-        public string Name { get; set; }
+        [Required]
+        [StringLength(255)]
+        public required string Name { get; set; }
 
-        [Required(ErrorMessage = "Workout date is required.")]
-        public DateTimeOffset Date { get; set; }
+        [Required]
+        public DateTimeOffset? Date { get; set; }
 
+        [StringLength(1000)]
         public string? Notes { get; set; }
     }
 }
