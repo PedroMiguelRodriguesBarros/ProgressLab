@@ -8,7 +8,6 @@ namespace Workouts
         [StringLength(255)]
         public required string Name { get; set; }
 
-        [Required]
         public DateTimeOffset? Date { get; set; }
     
         [StringLength(1000)]

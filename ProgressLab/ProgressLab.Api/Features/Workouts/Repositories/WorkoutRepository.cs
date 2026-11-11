@@ -14,7 +14,12 @@ namespace Workouts
 
         private IQueryable<Workout> QueryWithRelations()
         {
-            return _dbContext.Workouts;
+            return _dbContext.Workouts
+                .Include(w => w.WorkoutExercises)
+                    .ThenInclude(we => we.Exercise)
+                .Include(w => w.WorkoutExercises)
+                    .ThenInclude(we => we.Sets)
+                .AsSplitQuery();
         }
 
         public async Task<Workout> AddAsync(Workout workout, CancellationToken ct = default)
@@ -22,54 +27,63 @@ namespace Workouts
             _dbContext.Workouts.Add(workout);
             await _dbContext.SaveChangesAsync(ct);
 
-            var createdWorkout = await QueryWithRelations()
-                .AsNoTracking()
-                .FirstOrDefaultAsync(it => it.WorkoutId == workout.WorkoutId, ct);
-
-            return createdWorkout!;
+            return workout;
         }
 
-        public async Task DeleteAsync(Workout workout, CancellationToken ct = default)
-        {
-            var existingWorkout = await _dbContext.Workouts.FirstOrDefaultAsync(it => it.WorkoutId == workout.WorkoutId, ct);
-            if (existingWorkout != null)
-            {
-                _dbContext.Workouts.Remove(existingWorkout);
-                await _dbContext.SaveChangesAsync(ct);
-            }
-        }
-
-        public async Task<List<Workout>> GetAllAsync(int page, int pageSize, CancellationToken ct = default)
+        public async Task<Workout?> GetByIdAsync(Guid id, CancellationToken ct = default)
         {
             return await QueryWithRelations()
                 .AsNoTracking()
+                .FirstOrDefaultAsync(it => it.WorkoutId == id, ct);
+        }
+
+        public async Task<Workout?> GetByIdForUpdateAsync(Guid workoutId, CancellationToken ct = default)
+        {
+            return await _dbContext.Workouts
+                .Include(w => w.WorkoutExercises)
+                .FirstOrDefaultAsync(it => it.WorkoutId == workoutId, ct);
+        }
+
+        public async Task<WorkoutExercise?> GetWorkoutExerciseByIdAsync(Guid workoutExerciseId, CancellationToken ct = default)
+        {
+            return await _dbContext.WorkoutExercises
+                .Include(we => we.Sets)
+                .FirstOrDefaultAsync(we => we.WorkoutExerciseId == workoutExerciseId, ct);
+        }
+
+        public async Task<IReadOnlyList<Workout>> GetAllAsync(int page, int pageSize, CancellationToken ct = default)
+        {
+            if (page < 1)
+                throw new ArgumentOutOfRangeException(nameof(page));
+
+            if (pageSize < 1 || pageSize > 100)
+            throw new ArgumentOutOfRangeException(nameof(pageSize));
+
+            return await QueryWithRelations()
+                .AsNoTracking()
                 .OrderByDescending(it => it.Date)
+                .ThenBy(w => w.WorkoutId)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(ct);
         }
 
-        public async Task<Workout> UpdateAsync(Workout workout, CancellationToken ct = default)
+        public async Task UpdateAsync(Workout workout, CancellationToken ct = default)
         {
-            _dbContext.Workouts.Update(workout);
             await _dbContext.SaveChangesAsync(ct);
-
-            return workout;
         }
 
-        public async Task<Workout> GetByIdAsync(Guid id, CancellationToken ct = default)
+        public async Task<bool> DeleteAsync(Workout workout, CancellationToken ct = default)
         {
-            var workout = await QueryWithRelations()
-                .AsNoTracking()
-                .FirstOrDefaultAsync(it => it.WorkoutId == id, ct);
+            _dbContext.Workouts.Remove(workout);
+            var affectedRows = await _dbContext.SaveChangesAsync(ct);
 
-            return workout!;
+            return affectedRows > 0;
         }
 
         public async Task<bool> ExistsAsync(Guid workoutId, CancellationToken ct = default)
         {
             return await _dbContext.Workouts
-                .AsNoTracking()
                 .AnyAsync(it => it.WorkoutId == workoutId, ct);
         }
     }
