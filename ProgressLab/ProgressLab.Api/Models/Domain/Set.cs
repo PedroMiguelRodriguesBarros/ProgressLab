@@ -12,12 +12,11 @@ namespace Sets {
         public Set() {
         }
 
-        public Set(int setNumber, int repetitions, decimal weight, WorkoutExercise workoutExercise) {
+        public Set(int setNumber, int repetitions, decimal weight) {
             SetId = Guid.NewGuid();
             SetNumber = setNumber;
             Repetitions = repetitions;
             Weight = weight;
-            WorkoutExercise = workoutExercise;
         }
     }
 }

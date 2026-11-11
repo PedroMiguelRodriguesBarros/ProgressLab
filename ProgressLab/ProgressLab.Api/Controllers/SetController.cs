@@ -7,58 +7,65 @@ namespace Sets
     public class SetController : ControllerBase
     {
         private readonly SetService _service;
-        private readonly IMapper<Set, SetDetailedDto> _mapper;
 
-
-        public SetController(SetService setService, IMapper<Set, SetDetailedDto> mapper)
+        public SetController(SetService setService)
         {
             _service = setService;
-            _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<ActionResult<SetDetailedDto>> Create([FromBody] CreateSetDto dto, CancellationToken ct)
+        [Route("~/api/workout-exercises/{workoutExerciseId:guid}/sets")]
+        public async Task<ActionResult<SetDetailedDto>> Create([FromRoute] Guid workoutExerciseId, [FromBody] CreateSetDto dto, CancellationToken ct)
         {
-            var set = await _service.CreateAsync(dto, ct);
-            if (set == null)
-                return NotFound();
+            var set = await _service.CreateAsync(workoutExerciseId, dto, ct);
 
-            return Ok(_mapper.Map(set));
+            return CreatedAtAction(nameof(GetById), new { id = set.SetId }, set);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<SetDetailedDto>> GetById([FromRoute] Guid id, CancellationToken ct)
         {
             var set = await _service.GetByIdAsync(id, ct);
             if (set == null)
                 return NotFound();
 
-            return Ok(_mapper.Map(set));
+            return Ok(set);
+        }
+
+        [HttpGet("~/api/workout-exercises/{workoutExerciseId:guid}/sets")]
+        public async Task<ActionResult<IReadOnlyList<SetSummaryDto>>> GetAllByWorkoutExerciseId([FromRoute] Guid workoutExerciseId, CancellationToken ct)
+        {
+            var sets = await _service.GetAllByWorkoutExerciseIdAsync(workoutExerciseId, ct);
+
+            return Ok(sets);
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<SetDetailedDto>>> GetAll(int page = 1, int pageSize = 100, CancellationToken ct = default)
+        public async Task<ActionResult<List<SetSummaryDto>>> GetAll(int page = 1, int pageSize = 100, CancellationToken ct = default)
         {
             var sets = await _service.GetAllAsync(page, pageSize, ct);
-            var setDtos = sets.Select(s => _mapper.Map(s));
-            return Ok(setDtos);
+            return Ok(sets);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         public async Task<ActionResult<SetDetailedDto>> Update([FromRoute] Guid id, [FromBody] UpdateSetDto dto, CancellationToken ct)
         {
             var updatedSet = await _service.UpdateSetAsync(id, dto, ct);
             if (updatedSet == null)
                 return NotFound();
 
-            return Ok(_mapper.Map(updatedSet));
+            return Ok(updatedSet);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete([FromRoute] Guid setId, CancellationToken ct)
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult> Delete([FromRoute] Guid id, CancellationToken ct)
         {
-            await _service.DeleteAsync(setId, ct);
-            return Ok("Set deleted successfully.");
+            var deleted = await _service.DeleteAsync(id, ct);
+
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
         }
     }
 }
