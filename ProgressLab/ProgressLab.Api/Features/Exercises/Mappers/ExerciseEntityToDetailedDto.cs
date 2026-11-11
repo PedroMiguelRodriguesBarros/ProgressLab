@@ -5,12 +5,15 @@ namespace Exercises
         public ExerciseDetailedDto Map(Exercise src)
         {
             return new ExerciseDetailedDto
-            {
+            {   
+                ExerciseId = src.ExerciseId,
                 Name = src.Name,
                 Description = src.Description,
-                Duration = src.Duration,
-                Sets = src.Sets.Select(s => s.ToString()).ToList(),
-                MuscleGroup = src.MuscleGroup.ToString()
+                MuscleGroups = src.ExerciseMuscleGroups.Select(emg => new ExerciseMuscleGroupDto
+                {
+                    MuscleGroupId = emg.MuscleGroupId,
+                    MuscleGroupName = emg.MuscleGroup.Name
+                }).ToList()
             };
         }
     }

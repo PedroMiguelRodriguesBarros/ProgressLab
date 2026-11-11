@@ -14,7 +14,9 @@ namespace Exercises
 
         private IQueryable<Exercise> QueryWithRelations()
         {
-            return _dbContext.Exercises;
+            return _dbContext.Exercises
+            .Include(e => e.ExerciseMuscleGroups)
+            .ThenInclude(emg => emg.MuscleGroup);
         }
 
         public async Task<Exercise> AddAsync(Exercise exercise, CancellationToken ct = default)
@@ -22,48 +24,58 @@ namespace Exercises
             _dbContext.Exercises.Add(exercise);
             await _dbContext.SaveChangesAsync(ct);
 
-            var createdExercise = await QueryWithRelations()
+            return await QueryWithRelations()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(it => it.ExerciseId == exercise.ExerciseId, ct);
-
-            return createdExercise!;
+                .FirstAsync(e => e.ExerciseId == exercise.ExerciseId, ct);
         }
 
-        public async Task DeleteAsync(Exercise exercise, CancellationToken ct = default)
-        {
-            var existingExercise = await _dbContext.Exercises.FirstOrDefaultAsync(it => it.ExerciseId == exercise.ExerciseId, ct);
-            if (existingExercise != null)
-            {
-                _dbContext.Exercises.Remove(existingExercise);
-                await _dbContext.SaveChangesAsync(ct);
-            }
-        }
-
-        public async Task<List<Exercise>> GetAllAsync(int page, int pageSize, CancellationToken ct = default)
+        public async Task<Exercise?> GetByIdAsync(Guid id, CancellationToken ct = default)
         {
             return await QueryWithRelations()
                 .AsNoTracking()
-                .OrderByDescending(it => it.Name)
+                .FirstOrDefaultAsync(it => it.ExerciseId == id, ct);
+        }
+
+        public async Task<IReadOnlyList<Exercise>> GetAllAsync(int page, int pageSize, CancellationToken ct = default)
+        {
+            if (page < 1)
+            throw new ArgumentOutOfRangeException(nameof(page));
+
+            if (pageSize < 1 || pageSize > 100)
+            throw new ArgumentOutOfRangeException(nameof(pageSize));
+
+            return await QueryWithRelations()
+                .AsNoTracking()
+                .OrderBy(e => e.Name)
+                .ThenBy(e => e.ExerciseId)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(ct);
         }
 
-        public async Task<Exercise> UpdateAsync(Exercise exercise, CancellationToken ct = default)
+        public async Task<Exercise?> GetByIdForUpdateAsync(Guid id, CancellationToken ct = default)
         {
-            _dbContext.Exercises.Update(exercise);
-            await _dbContext.SaveChangesAsync(ct);
-
-            return exercise;
+            return await QueryWithRelations()
+            .FirstOrDefaultAsync(e => e.ExerciseId == id, ct);
         }
 
-        public async Task<Exercise> GetByIdAsync(Guid id, CancellationToken ct = default)
+        public async Task UpdateAsync(Exercise exercise, CancellationToken ct = default)
         {
-            var exercise = await QueryWithRelations()
-                .AsNoTracking()
-                .FirstOrDefaultAsync(it => it.ExerciseId == id, ct);
+            await _dbContext.SaveChangesAsync(ct);
+        }
 
-            return exercise!;
+        public async Task<bool> DeleteAsync(Exercise exercise, CancellationToken ct = default)
+        {
+            _dbContext.Exercises.Remove(exercise);
+            var affectedRows = await _dbContext.SaveChangesAsync(ct);
+
+            return affectedRows > 0;
+        }
+
+        public async Task<bool> ExistsAsync(Guid exerciseId, CancellationToken ct = default)
+        {
+            return await _dbContext.Exercises
+                .AnyAsync(it => it.ExerciseId == exerciseId, ct);
         }
     }
 }

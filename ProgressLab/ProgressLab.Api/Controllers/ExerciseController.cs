@@ -7,13 +7,11 @@ namespace Exercises
     public class ExerciseController : ControllerBase
     {
         private readonly ExerciseService _service;
-        private readonly IMapper<Exercise, ExerciseDetailedDto> _mapper;
 
 
-        public ExerciseController(ExerciseService exerciseService, IMapper<Exercise, ExerciseDetailedDto> mapper)
+        public ExerciseController(ExerciseService exerciseService)
         {
             _service = exerciseService;
-            _mapper = mapper;
         }
 
         [HttpPost]
@@ -23,42 +21,45 @@ namespace Exercises
             if (exercise == null)
                 return BadRequest("Failed to create exercise.");
 
-            return CreatedAtAction(nameof(GetById), new { id = exercise.ExerciseId }, _mapper.Map(exercise));
+            return CreatedAtAction(nameof(GetById), new { id = exercise.ExerciseId }, exercise);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ExerciseDetailedDto>> GetById([FromRoute] Guid exerciseId, CancellationToken ct)
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<ExerciseDetailedDto>> GetById([FromRoute] Guid id, CancellationToken ct)
         {
-            var exercise = await _service.GetByIdAsync(exerciseId, ct);
+            var exercise = await _service.GetByIdAsync(id, ct);
             if (exercise == null)
                 return NotFound();
 
-            return Ok(_mapper.Map(exercise));
+            return Ok(exercise);
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ExerciseDetailedDto>>> GetAll(int page = 1, int pageSize = 100, CancellationToken ct = default)
+        public async Task<ActionResult<List<ExerciseSummaryDto>>> GetAll(int page = 1, int pageSize = 100, CancellationToken ct = default)
         {
             var exercises = await _service.GetAllAsync(page, pageSize, ct);
-            var exerciseDtos = exercises.Select(e => _mapper.Map(e));
-            return Ok(exerciseDtos);
+            return Ok(exercises);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete([FromRoute] Guid exerciseId, CancellationToken ct)
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult> Delete([FromRoute] Guid id, CancellationToken ct)
         {
-            await _service.DeleteAsync(exerciseId, ct);
-            return Ok("Exercise deleted successfully.");
+            var deleted = await _service.DeleteAsync(id, ct);
+
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<ExerciseDetailedDto>> Update([FromRoute] Guid exerciseId, [FromBody] UpdateExerciseDto dto, CancellationToken ct)
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult<ExerciseDetailedDto>> Update([FromRoute] Guid id, [FromBody] UpdateExerciseDto dto, CancellationToken ct)
         {
-            var updatedExercise = await _service.UpdateExerciseAsync(exerciseId, dto, ct);
+            var updatedExercise = await _service.UpdateAsync(id, dto, ct);
             if (updatedExercise == null)
                 return NotFound();
 
-            return Ok(_mapper.Map(updatedExercise));
+            return Ok(updatedExercise);
         }
     }
 }

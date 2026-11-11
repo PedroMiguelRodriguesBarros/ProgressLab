@@ -7,13 +7,11 @@ namespace MuscleGroups
     public class MuscleGroupController : ControllerBase
     {
         private readonly MuscleGroupService _service;
-        private readonly IMapper<MuscleGroup, MuscleGroupDetailedDto> _mapper;
 
 
-        public MuscleGroupController(MuscleGroupService muscleGroupService, IMapper<MuscleGroup, MuscleGroupDetailedDto> mapper)
+        public MuscleGroupController(MuscleGroupService muscleGroupService)
         {
             _service = muscleGroupService;
-            _mapper = mapper;
         }
 
         [HttpPost]
@@ -23,13 +21,13 @@ namespace MuscleGroups
             if (muscleGroup == null)
                 return BadRequest("Failed to create muscle group.");
 
-            return CreatedAtAction(nameof(GetById), new { id = muscleGroup.MuscleGroupId });
+            return CreatedAtAction(nameof(GetById), new { id = muscleGroup.MuscleGroupId}, muscleGroup);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MuscleGroupDetailedDto>> GetById([FromRoute] Guid muscleGroupId, CancellationToken ct)
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<MuscleGroupDetailedDto>> GetById([FromRoute] Guid id, CancellationToken ct)
         {
-            var muscleGroup = await _service.GetByIdAsync(muscleGroupId, ct);
+            var muscleGroup = await _service.GetByIdAsync(id, ct);
             if (muscleGroup == null)
                 return NotFound();
 
@@ -37,23 +35,27 @@ namespace MuscleGroups
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<MuscleGroupDetailedDto>>> GetAll(int page = 1, int pageSize = 100, CancellationToken ct = default)
+        public async Task<ActionResult<IReadOnlyList<MuscleGroupSummaryDto>>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 100, [FromQuery] CancellationToken ct = default)
         {
             var muscleGroups = await _service.GetAllAsync(page, pageSize, ct);
             return Ok(muscleGroups);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete([FromRoute] Guid muscleGroupId, CancellationToken ct)
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult> Delete([FromRoute] Guid id, CancellationToken ct)
         {
-            await _service.DeleteAsync(muscleGroupId, ct);
-            return Ok("Muscle group deleted successfully.");
+            var deleted = await _service.DeleteAsync(id, ct);
+
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<MuscleGroupDetailedDto>> Update([FromRoute] Guid muscleGroupId, [FromBody] UpdateMuscleGroupDto dto, CancellationToken ct)
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult<MuscleGroupDetailedDto>> Update([FromRoute] Guid id, [FromBody] UpdateMuscleGroupDto dto, CancellationToken ct)
         {
-            var updatedMuscleGroup = await _service.UpdateAsync(muscleGroupId, dto, ct);
+            var updatedMuscleGroup = await _service.UpdateAsync(id, dto, ct);
             if (updatedMuscleGroup == null)
                 return NotFound();
 
