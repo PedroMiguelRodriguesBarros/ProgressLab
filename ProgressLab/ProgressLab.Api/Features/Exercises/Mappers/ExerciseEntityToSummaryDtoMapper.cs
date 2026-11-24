@@ -8,6 +8,8 @@ namespace Exercises
             {
                 ExerciseId = src.ExerciseId,
                 Name = src.Name,
+                PrimaryMuscleGroup = src.ExerciseMuscleGroups
+                .FirstOrDefault(emg => emg.Role == MuscleGroupRole.Primary)?.MuscleGroup.Name ?? string.Empty,
             };
         }
     }

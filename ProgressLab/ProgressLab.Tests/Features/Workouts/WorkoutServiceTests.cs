@@ -1,4 +1,3 @@
-
 using Exercises;
 using Moq;
 using Workouts;

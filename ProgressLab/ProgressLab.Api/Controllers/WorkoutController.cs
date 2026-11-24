@@ -21,7 +21,7 @@ namespace Workouts
             if (workout == null)
                 return BadRequest();
 
-            return Ok(workout);
+            return CreatedAtAction(nameof(GetById), new { id = workout.WorkoutId }, workout);
         }
 
         [HttpGet("{id:guid}")]
@@ -96,6 +96,10 @@ namespace Workouts
             {
                 return NotFound();
             }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete("{workoutId:guid}/exercises/{exerciseId:guid}")] 
@@ -107,6 +111,10 @@ namespace Workouts
                 return NoContent();
             }
             catch (ArgumentException)
+            {
+                return NotFound();
+            }
+            catch (InvalidOperationException)
             {
                 return NotFound();
             }

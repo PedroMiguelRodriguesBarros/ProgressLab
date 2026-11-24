@@ -17,27 +17,44 @@ namespace Sets
         [Route("~/api/workout-exercises/{workoutExerciseId:guid}/sets")]
         public async Task<ActionResult<SetDetailedDto>> Create([FromRoute] Guid workoutExerciseId, [FromBody] CreateSetDto dto, CancellationToken ct)
         {
-            var set = await _service.CreateAsync(workoutExerciseId, dto, ct);
+            try
+            {
+                var set = await _service.CreateAsync(workoutExerciseId, dto, ct);
 
-            return CreatedAtAction(nameof(GetById), new { id = set.SetId }, set);
+                return CreatedAtAction(nameof(GetById), new { id = set.SetId }, set);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<SetDetailedDto>> GetById([FromRoute] Guid id, CancellationToken ct)
         {
-            var set = await _service.GetByIdAsync(id, ct);
-            if (set == null)
+            try
+            {
+                var set = await _service.GetByIdAsync(id, ct);
+                return Ok(set);
+            }
+            catch (KeyNotFoundException)
+            {
                 return NotFound();
-
-            return Ok(set);
+            }
         }
 
         [HttpGet("~/api/workout-exercises/{workoutExerciseId:guid}/sets")]
         public async Task<ActionResult<IReadOnlyList<SetSummaryDto>>> GetAllByWorkoutExerciseId([FromRoute] Guid workoutExerciseId, CancellationToken ct)
         {
-            var sets = await _service.GetAllByWorkoutExerciseIdAsync(workoutExerciseId, ct);
-
-            return Ok(sets);
+            try
+            {
+                var sets = await _service.GetAllByWorkoutExerciseIdAsync(workoutExerciseId, ct);
+                return Ok(sets);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet]

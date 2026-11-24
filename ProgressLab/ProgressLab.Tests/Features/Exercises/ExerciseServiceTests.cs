@@ -1,4 +1,3 @@
-
 using Exercises;
 using ExercisesMuscleGroups;
 using MuscleGroups;

@@ -6,6 +6,7 @@ namespace Workouts
         {
             return new WorkoutSummaryDto
             {
+                WorkoutId = src.WorkoutId,
                 Name = src.Name,
                 Date = src.Date,
             };

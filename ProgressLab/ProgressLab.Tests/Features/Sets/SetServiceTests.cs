@@ -1,4 +1,3 @@
-
 using Moq;
 using Sets;
 using Workouts;
