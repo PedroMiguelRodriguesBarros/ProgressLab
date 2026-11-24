@@ -9,10 +9,10 @@ namespace Workouts {
         public Workout() {
         }
 
-        public Workout(string name, string? notes) {
+        public Workout(string name, DateTimeOffset date, string? notes) {
             WorkoutId = Guid.NewGuid();
             Name = name;
-            Date = DateTimeOffset.UtcNow;
+            Date = date;
             Notes = notes;
         }
     }

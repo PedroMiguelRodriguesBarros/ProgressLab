@@ -6,7 +6,7 @@ namespace Exercises
         {
             return new Exercise(
                 src.Name.Trim(),
-                src.Description.Trim()
+                src.Description?.Trim()
             );
         }
     }

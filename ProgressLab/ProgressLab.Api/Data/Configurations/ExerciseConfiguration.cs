@@ -15,7 +15,6 @@ namespace Data.Configurations
                 .HasMaxLength(255);
 
             builder.Property(e => e.Description)
-                .IsRequired()
                 .HasMaxLength(2000);
         }
     }

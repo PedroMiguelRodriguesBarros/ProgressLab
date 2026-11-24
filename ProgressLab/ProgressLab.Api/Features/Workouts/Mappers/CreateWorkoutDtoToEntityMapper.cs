@@ -6,6 +6,7 @@ namespace Workouts
         {
             return new Workout(
                 src.Name.Trim(),
+                src.Date ?? DateTimeOffset.UtcNow,
                 src.Notes?.Trim()
             );
         }

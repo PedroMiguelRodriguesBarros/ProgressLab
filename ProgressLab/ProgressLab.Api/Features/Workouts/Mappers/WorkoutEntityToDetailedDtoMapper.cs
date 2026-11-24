@@ -17,8 +17,10 @@ namespace Workouts
                     WorkoutExerciseId = we.WorkoutExerciseId,
                     ExerciseId = we.ExerciseId,
                     ExerciseName = we.Exercise.Name,
+                    Order = we.Order,
                     Sets = we.Sets.Select(s => new SetDetailedDto
                     {
+                        SetNumber = s.SetNumber,
                         SetId = s.SetId,
                         Repetitions = s.Repetitions,
                         Weight = s.Weight

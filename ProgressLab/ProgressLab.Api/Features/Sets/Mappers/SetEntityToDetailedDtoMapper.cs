@@ -6,6 +6,7 @@ namespace Sets
         {
             return new SetDetailedDto
             {
+                SetId = src.SetId,
                 SetNumber = src.SetNumber,
                 Repetitions = src.Repetitions,
                 Weight = src.Weight

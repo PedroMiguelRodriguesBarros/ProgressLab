@@ -61,5 +61,24 @@ namespace Workouts
 
             return NoContent();
         }
+
+        [HttpPost("{workoutId:guid}/exercises/{exerciseId:guid}")]
+        public async Task<IActionResult> AddExercise([FromRoute] Guid workoutId, [FromRoute] Guid exerciseId, CancellationToken ct)
+        {
+            try
+                {
+                    await _service.AddExerciseAsync(workoutId, exerciseId, ct);
+                    return NoContent();
+                }
+                catch (ArgumentException)
+                {
+                    return NotFound();
+                }
+                catch (InvalidOperationException)
+                {
+                    return Conflict();
+                }
+        }
     }
 }
+

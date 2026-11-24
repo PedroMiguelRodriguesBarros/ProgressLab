@@ -19,6 +19,12 @@ namespace Data.Configurations
             builder.Property(s => s.Weight)
                 .IsRequired()
                 .HasPrecision(6, 2);
+            
+            builder.HasIndex(s => new
+            {
+                s.WorkoutExerciseId,
+                s.SetNumber
+            }).IsUnique();
         }
     }
 }

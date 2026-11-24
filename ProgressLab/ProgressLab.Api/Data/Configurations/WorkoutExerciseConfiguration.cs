@@ -30,6 +30,12 @@ namespace Data.Configurations
                 .WithOne(s => s.WorkoutExercise)
                 .HasForeignKey(s => s.WorkoutExerciseId)
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.HasIndex(we => new
+            {
+                we.WorkoutId,
+                we.Order
+            }).IsUnique();
         }
     }
 }

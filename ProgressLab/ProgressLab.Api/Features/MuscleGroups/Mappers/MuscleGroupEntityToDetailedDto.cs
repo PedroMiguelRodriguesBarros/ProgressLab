@@ -6,8 +6,9 @@ namespace MuscleGroups
         {
             return new MuscleGroupDetailedDto
             {
-                Name = src.Name,
-                Description = src.Description,
+                MuscleGroupId = src.MuscleGroupId,
+                Name = src.Name.Trim(),
+                Description = src.Description?.Trim(),
             };
         }
     }

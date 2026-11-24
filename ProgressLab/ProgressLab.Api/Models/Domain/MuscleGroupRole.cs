@@ -1,9 +1,6 @@
-namespace ExercisesMuscleGroups
+public enum MuscleGroupRole
 {
-    public enum MuscleGroupRole
-    {
-        Primary,
-        Secondary
-    }
+    Unspecified = 0,
+    Primary = 1,
+    Secondary = 2
 }
-

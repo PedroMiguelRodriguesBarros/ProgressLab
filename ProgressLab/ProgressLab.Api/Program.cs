@@ -13,7 +13,6 @@ builder.Services.AddOpenApi();
 //Controllers
 builder.Services.AddControllers();
 
-
 // Database connection
 var connectionString = builder.Configuration
     .GetConnectionString("ProgressLabConnection")

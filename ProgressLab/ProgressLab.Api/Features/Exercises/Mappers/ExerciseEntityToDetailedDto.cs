@@ -7,12 +7,13 @@ namespace Exercises
             return new ExerciseDetailedDto
             {   
                 ExerciseId = src.ExerciseId,
-                Name = src.Name,
-                Description = src.Description,
+                Name = src.Name.Trim(),
+                Description = src.Description?.Trim(),
                 MuscleGroups = src.ExerciseMuscleGroups.Select(emg => new ExerciseMuscleGroupDto
                 {
                     MuscleGroupId = emg.MuscleGroupId,
-                    MuscleGroupName = emg.MuscleGroup.Name
+                    MuscleGroupName = emg.MuscleGroup.Name,
+                    Role = emg.Role
                 }).ToList()
             };
         }

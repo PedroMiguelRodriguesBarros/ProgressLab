@@ -6,7 +6,7 @@ namespace MuscleGroups
         {
             return new MuscleGroup(
                 src.Name.Trim(),
-                src.Description.Trim()
+                src.Description?.Trim()
             );
         }
     }

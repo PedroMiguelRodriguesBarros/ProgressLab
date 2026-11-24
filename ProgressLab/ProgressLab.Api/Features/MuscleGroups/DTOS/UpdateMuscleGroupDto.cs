@@ -8,9 +8,8 @@ namespace MuscleGroups
         [StringLength(255, MinimumLength = 1)]
         public required string Name { get; set; }
 
-        [Required]
         [StringLength(2000, MinimumLength = 1)]
-        public required string Description { get; set; }
+        public string? Description { get; set; }
 
     }
 }

@@ -18,7 +18,6 @@ namespace Workouts
 
         public WorkoutExercise(Guid workoutId, Guid exerciseId, int order)
         {
-            WorkoutExerciseId = Guid.NewGuid();
             WorkoutId = workoutId;
             ExerciseId = exerciseId;
             Order = order;
