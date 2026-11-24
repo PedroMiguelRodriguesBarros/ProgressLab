@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProgressLab.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+83bccbe140a9802243c6c8bf8eb4fee03865c348")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8e3f4f75a8387f719c6eadaa54973472a3b0bd2f")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProgressLab.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProgressLab.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

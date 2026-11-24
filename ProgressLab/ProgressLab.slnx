@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ProgressLab.Api/ProgressLab.Api.csproj" />
+  <Project Path="ProgressLab.Tests/ProgressLab.Tests.csproj" />
+</Solution>

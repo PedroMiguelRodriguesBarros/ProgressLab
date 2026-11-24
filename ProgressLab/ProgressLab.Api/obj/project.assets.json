@@ -2617,6 +2617,7 @@
       "Microsoft.AspNetCore.OpenApi >= 10.0.14",
       "Microsoft.EntityFrameworkCore >= 10.0.14",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.14",
+      "Microsoft.EntityFrameworkCore.Relational >= 10.0.14",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 10.0.3",
       "Swashbuckle.AspNetCore >= 10.3.0"
     ]
@@ -2675,6 +2676,10 @@
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
+            "target": "Package",
+            "version": "[10.0.14, )"
+          },
+          "Microsoft.EntityFrameworkCore.Relational": {
             "target": "Package",
             "version": "[10.0.14, )"
           },
