@@ -48,7 +48,7 @@ namespace MuscleGroups
             }
 
             muscleGroup.Name = dto.Name.Trim();
-            muscleGroup.Description = dto.Description.Trim();
+            muscleGroup.Description = dto.Description?.Trim();
 
             await _repo.UpdateAsync(muscleGroup, ct);
 

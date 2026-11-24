@@ -182,7 +182,7 @@ namespace Workouts
                 workoutExercises[i].Order = i + 1;
             }
 
-            await _repo.UpdateAsync(workout, ct);
+            await _repo.UpdateExerciseOrderAsync(workout, ct);
         }
     }
 }

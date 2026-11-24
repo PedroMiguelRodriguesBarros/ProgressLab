@@ -79,6 +79,39 @@ namespace Workouts
                     return Conflict();
                 }
         }
+
+        [HttpPut("{workoutId:guid}/exercises/{exerciseId:guid}/order")]
+        public async Task<IActionResult> UpdateExerciseOrder([FromRoute] Guid workoutId, [FromRoute] Guid exerciseId, [FromBody] UpdateWorkoutExerciseOrderDto dto, CancellationToken ct)
+        {
+            try
+            {
+                await _service.UpdateExerciseOrderAsync(workoutId, exerciseId, dto.NewOrder, ct);
+                return NoContent();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return BadRequest();
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpDelete("{workoutId:guid}/exercises/{exerciseId:guid}")] 
+        public async Task<IActionResult> RemoveExercise([FromRoute] Guid workoutId, [FromRoute] Guid exerciseId, CancellationToken ct)
+        {
+            try
+            {
+                await _service.RemoveExerciseAsync(workoutId, exerciseId, ct);
+                return NoContent();
+            }
+            catch (ArgumentException)
+            {
+                return NotFound();
+            }
+        }
     }
 }
+
 

@@ -71,7 +71,7 @@ namespace Exercises
 
         public async Task<ExerciseDetailedDto?> UpdateAsync(Guid exerciseId, UpdateExerciseDto dto, CancellationToken ct = default)
         {
-            if (!HasValidMuscleGroups(dto.MuscleGroups))
+            if (dto.MuscleGroups is null || !HasValidMuscleGroups(dto.MuscleGroups))
             {
                 return null;
             }
@@ -94,7 +94,7 @@ namespace Exercises
             }
 
             exercise.Name = dto.Name.Trim();
-            exercise.Description = dto.Description.Trim();
+            exercise.Description = dto.Description?.Trim();
 
             var requestedGroups = dto.MuscleGroups.ToDictionary(
                 mg => mg.MuscleGroupId

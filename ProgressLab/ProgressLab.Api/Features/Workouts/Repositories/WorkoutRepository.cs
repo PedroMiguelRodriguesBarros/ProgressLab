@@ -86,5 +86,40 @@ namespace Workouts
             return await _dbContext.Workouts
                 .AnyAsync(it => it.WorkoutId == workoutId, ct);
         }
+
+        public async Task UpdateExerciseOrderAsync(Workout workout, CancellationToken ct = default)
+        {
+            var orderedExercises = workout.WorkoutExercises
+                .OrderBy(we => we.Order)
+                .ToList();
+
+            await using var transaction =
+                await _dbContext.Database.BeginTransactionAsync(ct);
+
+            try
+            {
+                // Phase 1: Assign temporary unique positions
+                for (int i = 0; i < orderedExercises.Count; i++)
+                {
+                    orderedExercises[i].Order = -(i + 1);
+                }
+
+                await _dbContext.SaveChangesAsync(ct);
+
+                // Phase 2: Assign the final positions
+                for (int i = 0; i < orderedExercises.Count; i++)
+                {
+                    orderedExercises[i].Order = i + 1;
+                }
+
+                await _dbContext.SaveChangesAsync(ct);
+                await transaction.CommitAsync(ct);
+            }
+            catch
+            {
+                await transaction.RollbackAsync(ct);
+                throw;
+            }
+        }
     }
 }

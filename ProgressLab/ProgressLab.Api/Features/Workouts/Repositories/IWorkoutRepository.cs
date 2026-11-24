@@ -7,5 +7,6 @@ namespace Workouts
         Task<bool> ExistsAsync(Guid workoutId, CancellationToken ct = default);
         Task<Workout?> GetByIdForUpdateAsync(Guid workoutId, CancellationToken ct = default);
         Task<WorkoutExercise?> GetWorkoutExerciseByIdAsync(Guid workoutExerciseId, CancellationToken ct = default);
+        Task UpdateExerciseOrderAsync(Workout workout, CancellationToken ct = default);
     }
 }
